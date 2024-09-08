@@ -60,6 +60,11 @@ export class DarkHeresyActor extends Actor {
 
     }
 
+    // why does Copilot suggest this? Is this used anywhere?
+    get skills() {
+        return foundry.utils.deepClone(CONFIG.DH2E.skills);
+    }
+
     _computeSkills() {
         for (let skill of Object.values(this.skills)) {
             let short = skill.characteristics[0];
