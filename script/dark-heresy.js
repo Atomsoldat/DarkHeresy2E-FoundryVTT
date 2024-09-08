@@ -35,6 +35,20 @@ import { registerDataModels } from "./setup/registerDataModels.js";
 Hooks.once("init", function() {
     CONFIG.Combat.initiative = { formula: "@initiative.base + @initiative.bonus", decimals: 0 };
     CONFIG.Actor.documentClass = DarkHeresyActor;
+    // define skills in DH2E namespace globally, so they can later be messed with by other modules
+    CONFIG.DH2E = {
+        skills: {
+            awareness: {
+                label: "Awareness",
+                characteristics: ["per"],
+                advance: 0,
+                total: 0,
+                isSpecialist: false,
+                specialities: {}
+            },
+            // Add other skills here
+        }
+    };
     CONFIG.Item.documentClass = DarkHeresyItem;
     CONFIG.fontDefinitions["Caslon Antique"] = { editor: true, fonts: [] };
     CONFIG.ActiveEffect.legacyTransferral = false;
