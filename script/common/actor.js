@@ -1,6 +1,12 @@
+import Dh from "./config.js";
+
 export class DarkHeresyActor extends Actor {
 
     async _preCreate(data, options, user) {
+        //if (!data.system.skills) data.system.skills = {};
+        //data.system.skills = foundry.utils.deepClone(Dh.skills);
+        //console.log("DEBUG: What our actor data looks like during _preCreate()", data);
+        console.log("DEBUG: Our Actor during precreate()", this);
 
         let initData = {
             "prototypeToken.bar1": { attribute: "wounds" },
@@ -17,6 +23,24 @@ export class DarkHeresyActor extends Actor {
         this.updateSource(initData);
     }
 
+
+    // we  overwrite the parent class function so we can get our extra information set up during creation
+   // static async create(data, options) {
+   //     // Ensure the actor has a skills property
+   //     //if (!this.skills) {
+   //     //    this.skills = {};
+   //     //    console.log("this.skills was undefined");
+   //     //}
+   //     
+   //     // Overwrite the skills property from our config
+   //     data.skills = foundry.utils.deepClone(Dh.skills);
+   //     console.log("DEBUG: What our actor looks like during create()", this);
+   // 
+   //     // Call the parent class's create method
+   //     return super.create(data, options);
+   // }
+
+    // this function is called each time an actor is created or updated
     prepareBaseData() {
         super.prepareBaseData();
         this._computeCharacteristics();
@@ -64,12 +88,13 @@ export class DarkHeresyActor extends Actor {
 
     }
 
-    // why does Copilot suggest this? Is this used anywhere?
-    get skills() {
-        return foundry.utils.deepClone(CONFIG.DH2E.skills);
-    }
-
     _computeSkills() {
+        console.log("DEBUG: What our actor looks like during computeSkills before our stuff:", this);
+        if (Object.keys(this.system.skills).length === 0) {
+            this.system.skills = foundry.utils.deepClone(Dh.skills);
+            console.log("DEBUG: system.skills was empty", this);
+        };
+        console.log("DEBUG: What our actor looks like during computeSkills before after our stuff:", this);
         for (let skill of Object.values(this.skills)) {
             let short = skill.characteristics[0];
             let characteristic = this._findCharacteristic(short);
@@ -545,8 +570,12 @@ export class DarkHeresyActor extends Actor {
         return existing
     }
 
+
+    // each actor has a system property. this property is derived from template.json and def
+
     get characteristics() { return this.system.characteristics; }
 
+    // This is a getter and gets used e.g. above in "this.skills"
     get skills() { return this.system.skills; }
 
     get initiative() { return this.system.initiative; }

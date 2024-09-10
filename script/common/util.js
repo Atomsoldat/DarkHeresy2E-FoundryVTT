@@ -97,7 +97,7 @@ export default class DarkHeresyUtil {
     }
 
     static createSkillRollData(actor, skillName) {
-        const skill = actor.skills[skillName];
+        const skill = actor._computedSkills[skillName];
         const defaultChar = skill.defaultCharacteristic || skill.characteristics[0];
 
         let characteristics = this.getCharacteristicOptions(actor, defaultChar);

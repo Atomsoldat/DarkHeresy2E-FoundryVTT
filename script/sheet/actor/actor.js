@@ -1,5 +1,6 @@
 import { prepareCommonRoll, prepareCombatRoll, preparePsychicPowerRoll } from "../../common/dialog.js";
 import DarkHeresyUtil from "../../common/util.js";
+import Dh from "../../common/config.js";
 
 export class DarkHeresySheet extends ActorSheet {
     activateListeners(html) {
@@ -21,7 +22,6 @@ export class DarkHeresySheet extends ActorSheet {
         const data = super.getData();
         data.system = data.data.system;
         data.items = this.constructItemLists(data);
-        data.actor.skills = foundry.utils.deepClone(CONFIG.DH2E.skills);
         data.enrichment = await this._enrichment();
         data.effects = this.prepareActiveEffectCategories();
         return data;
